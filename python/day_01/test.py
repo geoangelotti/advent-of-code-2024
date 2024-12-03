@@ -1,7 +1,7 @@
 import pytest
-from lib import process_part_1
+from lib import process_part_1, process_part_2
 
-INPUT_1 = '''3   4
+INPUT = '''3   4
 4   3
 2   5
 1   3
@@ -11,7 +11,14 @@ INPUT_1 = '''3   4
 
 
 @pytest.mark.parametrize("input,expected", [
-    (INPUT_1, 11)
+    (INPUT, 11)
 ])
 def test_part_1(input: str, expected: int):
     assert process_part_1(input) == expected
+
+
+@pytest.mark.parametrize("input,expected", [
+    (INPUT, 31)
+])
+def test_part_2(input: str, expected: int):
+    assert process_part_2(input) == expected
