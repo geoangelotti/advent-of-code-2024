@@ -1,6 +1,7 @@
 package day02
 
 import (
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -52,6 +53,31 @@ func ProcessPart1(input string) int {
 	return acc
 }
 
+func isSafe(report []int) bool {
+	shouldIncrease := report[1] > report[0]
+	for i := 1; i < len(report); i++ {
+		distance := abs(report[i] - report[i-1])
+		if distance < 1 || distance > 3 {
+			return false
+		}
+		increases := report[i] > report[i-1]
+		if shouldIncrease != increases {
+			return false
+		}
+	}
+	return true
+}
+
 func ProcessPart2(input string) int {
-	return 0
+	acc := 0
+	reports := getReports(input)
+	for _, report := range reports {
+		for i := range report {
+			if isSafe(slices.Concat(report[:i], report[i+1:])) {
+				acc += 1
+				break
+			}
+		}
+	}
+	return acc
 }
