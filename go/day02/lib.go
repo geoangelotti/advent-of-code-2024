@@ -40,15 +40,24 @@ func allSlice(ints []int, comparison func(int) bool) bool {
 	return true
 }
 
-func ProcessPart1(input string) int {
-	acc := 0
+func getReports(input string) [][]int {
+	reports := [][]int{}
 	for _, line := range strings.Split(input, "\n") {
 		report := []int{}
-		windowed := []int{}
 		for _, levels := range strings.Split(line, " ") {
 			levels, _ := strconv.Atoi(levels)
 			report = append(report, levels)
 		}
+		reports = append(reports, report)
+	}
+	return reports
+}
+
+func ProcessPart1(input string) int {
+	acc := 0
+	reports := getReports(input)
+	for _, report := range reports {
+		windowed := []int{}
 		for i := 0; i < len(report)-1; i++ {
 			windowed = append(windowed, report[i]-report[i+1])
 		}
