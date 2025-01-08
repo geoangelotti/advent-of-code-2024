@@ -12,34 +12,6 @@ func abs(x int) int {
 	return -1 * x
 }
 
-func safeDifferences(levelsDifferences []int) bool {
-	for _, levelsDifference := range levelsDifferences {
-		if !(abs(levelsDifference) > 0 && abs(levelsDifference) < 4) {
-			return false
-		}
-	}
-	return true
-}
-
-func safeDirections(levelsDifference []int) bool {
-	isPositiveComparison := func(x int) bool {
-		return x <= 0
-	}
-	isNegativeComparison := func(x int) bool {
-		return x >= 0
-	}
-	return allSlice(levelsDifference, isPositiveComparison) || allSlice(levelsDifference, isNegativeComparison)
-}
-
-func allSlice(ints []int, comparison func(int) bool) bool {
-	for _, i := range ints {
-		if comparison(i) {
-			return false
-		}
-	}
-	return true
-}
-
 func getReports(input string) [][]int {
 	reports := [][]int{}
 	for _, line := range strings.Split(input, "\n") {
@@ -57,11 +29,23 @@ func ProcessPart1(input string) int {
 	acc := 0
 	reports := getReports(input)
 	for _, report := range reports {
-		windowed := []int{}
-		for i := 0; i < len(report)-1; i++ {
-			windowed = append(windowed, report[i]-report[i+1])
+		isIncreasing := report[1] > report[0]
+		isSafe := true
+		for i := 1; i < len(report); i++ {
+			if report[i] == report[i-1] {
+				isSafe = false
+				break
+			}
+			if isIncreasing != (report[i] > report[i-1]) {
+				isSafe = false
+				break
+			}
+			if abs(report[i]-report[i-1]) > 3 {
+				isSafe = false
+				break
+			}
 		}
-		if safeDifferences(windowed) && safeDirections(windowed) {
+		if isSafe {
 			acc += 1
 		}
 	}
