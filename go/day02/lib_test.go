@@ -19,3 +19,11 @@ func TestProcessPart1(t *testing.T) {
 		t.Errorf("Expected %d got %d", expected, answer)
 	}
 }
+
+func TestProcessPart2(t *testing.T) {
+	expected := 4
+	answer := day02.ProcessPart2(INPUT)
+	if answer != expected {
+		t.Errorf("Expected %d got %d", expected, answer)
+	}
+}
