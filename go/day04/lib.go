@@ -4,7 +4,7 @@ import (
 	"strings"
 )
 
-func getMasks(ints []int) [][][]int {
+func getXMASMasks(ints []int) [][][]int {
 	i := ints[0]
 	j := ints[1]
 	return [][][]int{
@@ -33,7 +33,7 @@ func isXmas(mask [][]int, grid [][]rune) bool {
 }
 
 func calculateXmas(ints []int, grid [][]rune) int {
-	masks := getMasks(ints)
+	masks := getXMASMasks(ints)
 	var acc int
 	for _, mask := range masks {
 		if isXmas(mask, grid) {
