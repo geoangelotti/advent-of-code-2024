@@ -19,22 +19,17 @@ func getMasks(ints []int) [][][]int {
 	}
 }
 
-func isXmas(mask [][]int, grid [][]rune) (is bool) {
-	defer func() {
-		if r := recover(); r != nil {
-			is = false
-		}
-	}()
+func isXmas(mask [][]int, grid [][]rune) bool {
 	var acc string
 	for _, coord := range mask {
 		i := coord[0]
 		j := coord[1]
+		if i < 0 || j < 0 || i >= len(grid) || j >= len(grid[i]) {
+			return false
+		}
 		acc += string(grid[i][j])
 	}
-	if acc == "XMAS" {
-		return true
-	}
-	return
+	return acc == "XMAS"
 }
 
 func calculateXmas(ints []int, grid [][]rune) int {
