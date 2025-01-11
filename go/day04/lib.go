@@ -4,7 +4,7 @@ import (
 	"strings"
 )
 
-func getMasks(ints []int) [][][]int {
+func getXMASMasks(ints []int) [][][]int {
 	i := ints[0]
 	j := ints[1]
 	return [][][]int{
@@ -19,7 +19,18 @@ func getMasks(ints []int) [][][]int {
 	}
 }
 
-func isXmas(mask [][]int, grid [][]rune) bool {
+func getMASMasks(ints []int) [][][]int {
+	i := ints[0]
+	j := ints[1]
+	return [][][]int{
+		{{i - 1, j - 1}, {i, j}, {i + 1, j + 1}},
+		{{i + 1, j + 1}, {i, j}, {i - 1, j - 1}},
+		{{i + 1, j - 1}, {i, j}, {i - 1, j + 1}},
+		{{i - 1, j + 1}, {i, j}, {i + 1, j - 1}},
+	}
+}
+
+func isXmas(mask [][]int, grid [][]rune, target string) bool {
 	var acc string
 	for _, coord := range mask {
 		i := coord[0]
@@ -29,18 +40,32 @@ func isXmas(mask [][]int, grid [][]rune) bool {
 		}
 		acc += string(grid[i][j])
 	}
-	return acc == "XMAS"
+	return acc == target
 }
 
 func calculateXmas(ints []int, grid [][]rune) int {
-	masks := getMasks(ints)
+	masks := getXMASMasks(ints)
 	var acc int
 	for _, mask := range masks {
-		if isXmas(mask, grid) {
+		if isXmas(mask, grid, "XMAS") {
 			acc += 1
 		}
 	}
 	return acc
+}
+
+func calculateMas(ints []int, grid [][]rune) int {
+	masks := getMASMasks(ints)
+	var acc int
+	for _, mask := range masks {
+		if isXmas(mask, grid, "MAS") {
+			acc += 1
+		}
+	}
+	if acc > 1 {
+		return 1
+	}
+	return 0
 }
 
 func parseGrid(input string) [][]rune {
@@ -61,6 +86,17 @@ func ProcessPart1(input string) int {
 	for i := 0; i < len(grid); i++ {
 		for j := 0; j < len(grid[i]); j++ {
 			acc += calculateXmas([]int{i, j}, grid)
+		}
+	}
+	return acc
+}
+
+func ProcessPart2(input string) int {
+	var acc int
+	grid := parseGrid(input)
+	for i := 0; i < len(grid); i++ {
+		for j := 0; j < len(grid[i]); j++ {
+			acc += calculateMas([]int{i, j}, grid)
 		}
 	}
 	return acc
