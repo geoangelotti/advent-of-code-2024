@@ -54,6 +54,20 @@ func calculateXmas(ints []int, grid [][]rune) int {
 	return acc
 }
 
+func calculateMas(ints []int, grid [][]rune) int {
+	masks := getMASMasks(ints)
+	var acc int
+	for _, mask := range masks {
+		if isXmas(mask, grid, "MAS") {
+			acc += 1
+		}
+	}
+	if acc > 1 {
+		return 1
+	}
+	return 0
+}
+
 func parseGrid(input string) [][]rune {
 	grid := [][]rune{}
 	for _, line := range strings.Split(input, "\n") {
@@ -82,7 +96,7 @@ func ProcessPart2(input string) int {
 	grid := parseGrid(input)
 	for i := 0; i < len(grid); i++ {
 		for j := 0; j < len(grid[i]); j++ {
-			acc += calculateXmas([]int{i, j}, grid)
+			acc += calculateMas([]int{i, j}, grid)
 		}
 	}
 	return acc
