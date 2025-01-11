@@ -19,6 +19,17 @@ func getXMASMasks(ints []int) [][][]int {
 	}
 }
 
+func getMASMasks(ints []int) [][][]int {
+	i := ints[0]
+	j := ints[1]
+	return [][][]int{
+		{{i - 1, j - 1}, {i, j}, {i + 1, j + 1}},
+		{{i + 1, j + 1}, {i, j}, {i - 1, j - 1}},
+		{{i + 1, j - 1}, {i, j}, {i - 1, j + 1}},
+		{{i - 1, j + 1}, {i, j}, {i + 1, j - 1}},
+	}
+}
+
 func isXmas(mask [][]int, grid [][]rune, target string) bool {
 	var acc string
 	for _, coord := range mask {
@@ -68,5 +79,11 @@ func ProcessPart1(input string) int {
 
 func ProcessPart2(input string) int {
 	var acc int
+	grid := parseGrid(input)
+	for i := 0; i < len(grid); i++ {
+		for j := 0; j < len(grid[i]); j++ {
+			acc += calculateXmas([]int{i, j}, grid)
+		}
+	}
 	return acc
 }
