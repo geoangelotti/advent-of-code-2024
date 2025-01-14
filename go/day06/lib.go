@@ -78,3 +78,8 @@ func ProcessPart1(input string) int {
 	}
 	return len(seen)
 }
+
+func ProcessPart2(input string) int {
+	var acc int
+	return acc
+}
