@@ -80,6 +80,25 @@ func ProcessPart1(input string) int {
 }
 
 func ProcessPart2(input string) int {
-	var acc int
-	return acc
+	var grid = parseGrid(input)
+	var start = findStart(grid)
+	current := start
+	direction := UP
+	var obstacles = make(map[string]bool)
+	var seen = make(map[string]int)
+	seen[current.String()] = direction
+	next := nextPoint(current, direction)
+	for next[0] >= 0 && next[1] >= 0 && next[0] < len(grid[0]) && next[1] < len(grid) {
+		if grid[next[1]][next[0]] == '#' {
+			direction = turnRight(direction)
+		} else {
+			current = next
+			seen[current.String()] = direction
+		}
+		next = nextPoint(current, direction)
+	}
+	for _, line := range grid {
+		fmt.Println(string(line))
+	}
+	return len(obstacles)
 }
