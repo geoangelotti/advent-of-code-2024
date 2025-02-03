@@ -1,7 +1,6 @@
 package day07
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 )
@@ -25,7 +24,37 @@ func parseInput(input string) map[int][]int {
 	return equations
 }
 
+func generateCombinations(n int, current string, result *[]string) {
+	if n == 0 {
+		*result = append(*result, current)
+		return
+	}
+
+	generateCombinations(n-1, current+"+", result)
+	generateCombinations(n-1, current+"*", result)
+}
+
+func getCombinations(n int) []string {
+	result := []string{}
+	generateCombinations(n, "", &result)
+	return result
+}
+
 func canBeCalibrated(target int, equations []int) bool {
+	operations := getCombinations(len(equations) - 1)
+	for _, operation := range operations {
+		acc := equations[0]
+		for i, equation := range equations[1:] {
+			if operation[i] == '+' {
+				acc += equation
+			} else {
+				acc *= equation
+			}
+		}
+		if acc == target {
+			return true
+		}
+	}
 	return false
 }
 
@@ -37,6 +66,5 @@ func ProcessPart1(input string) int {
 			acc += key
 		}
 	}
-	fmt.Println(equations)
 	return acc
 }
