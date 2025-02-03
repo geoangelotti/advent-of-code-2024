@@ -78,3 +78,43 @@ func ProcessPart1(input string) int {
 	}
 	return len(seen)
 }
+
+func isLoop(grid [][]rune, start Point) bool {
+	current := start
+	direction := UP
+	var seen = make(map[string]int)
+	seen[current.String()] = direction
+	next := nextPoint(current, direction)
+	for next[0] >= 0 && next[1] >= 0 && next[0] < len(grid[0]) && next[1] < len(grid) {
+		if seenDirection, ok := seen[next.String()]; ok && seenDirection == direction {
+			return true
+		}
+		if grid[next[1]][next[0]] == '#' {
+			direction = turnRight(direction)
+		} else {
+			current = next
+			seen[current.String()] = direction
+		}
+		next = nextPoint(current, direction)
+	}
+	return false
+}
+
+func ProcessPart2(input string) int {
+	var grid = parseGrid(input)
+	var start = findStart(grid)
+	var acc = 0
+	for y, row := range grid {
+		for x, cell := range row {
+			if cell != '#' && cell != '^' {
+				oldValue := grid[y][x]
+				grid[y][x] = '#'
+				if isLoop(grid, start) {
+					acc += 1
+				}
+				grid[y][x] = oldValue
+			}
+		}
+	}
+	return acc
+}
