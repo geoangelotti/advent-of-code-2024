@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func parse_input(input string) map[int][]int {
+func parseInput(input string) map[int][]int {
 	equations := make(map[int][]int)
 	for _, line := range strings.Split(input, "\n") {
 		fragment := strings.Split(line, ":")
@@ -26,7 +26,7 @@ func parse_input(input string) map[int][]int {
 }
 
 func ProcessPart1(input string) int {
-	equations := parse_input(input)
+	equations := parseInput(input)
 	fmt.Println(equations)
 	return 0
 }
