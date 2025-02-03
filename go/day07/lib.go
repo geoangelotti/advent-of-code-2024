@@ -25,8 +25,18 @@ func parseInput(input string) map[int][]int {
 	return equations
 }
 
+func canBeCalibrated(target int, equations []int) bool {
+	return false
+}
+
 func ProcessPart1(input string) int {
+	var acc int
 	equations := parseInput(input)
+	for key, value := range equations {
+		if canBeCalibrated(key, value) {
+			acc += key
+		}
+	}
 	fmt.Println(equations)
-	return 0
+	return acc
 }
