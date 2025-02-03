@@ -24,24 +24,25 @@ func parseInput(input string) map[int][]int {
 	return equations
 }
 
-func generateCombinations(n int, current string, result *[]string) {
+func generateCombinations(n int, current string, result *[]string, operations []string) {
 	if n == 0 {
 		*result = append(*result, current)
 		return
 	}
+	for _, operation := range operations {
+		generateCombinations(n-1, current+operation, result, operations)
+	}
 
-	generateCombinations(n-1, current+"+", result)
-	generateCombinations(n-1, current+"*", result)
 }
 
-func getCombinations(n int) []string {
+func getCombinations(n int, operations []string) []string {
 	result := []string{}
-	generateCombinations(n, "", &result)
+	generateCombinations(n, "", &result, operations)
 	return result
 }
 
-func canBeCalibrated(target int, equations []int) bool {
-	operations := getCombinations(len(equations) - 1)
+func canBeCalibrated(target int, equations []int, allowedOperations []string) bool {
+	operations := getCombinations(len(equations)-1, allowedOperations)
 	for _, operation := range operations {
 		acc := equations[0]
 		for i, equation := range equations[1:] {
@@ -62,7 +63,7 @@ func ProcessPart1(input string) int {
 	var acc int
 	equations := parseInput(input)
 	for key, value := range equations {
-		if canBeCalibrated(key, value) {
+		if canBeCalibrated(key, value, []string{"+", "*"}) {
 			acc += key
 		}
 	}
