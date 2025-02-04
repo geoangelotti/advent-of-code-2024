@@ -1,6 +1,7 @@
 package day07
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -48,8 +49,11 @@ func canBeCalibrated(target int, numbers []int, allowedOperations []string) bool
 		for i, number := range numbers[1:] {
 			if operation[i] == '+' {
 				acc += number
-			} else {
+			} else if operation[i] == '*' {
 				acc *= number
+			} else {
+				concatenated, _ := strconv.Atoi(fmt.Sprintf("%d%d", acc, number))
+				acc = concatenated
 			}
 		}
 		if acc == target {
@@ -71,5 +75,12 @@ func ProcessPart1(input string) int {
 }
 
 func ProcessPart2(input string) int {
-	return 0
+	var acc int
+	equations := parseInput(input)
+	for key, value := range equations {
+		if canBeCalibrated(key, value, []string{"+", "*", " "}) {
+			acc += key
+		}
+	}
+	return acc
 }
