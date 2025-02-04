@@ -1,7 +1,7 @@
 package day05
 
 import (
-	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -17,15 +17,23 @@ func parseInput(input string) ([]string, [][]string) {
 	return rules, pages
 }
 
+func filterPages(pages []string, rules map[string]bool) bool {
+	return false
+}
+
 func ProcessPart1(input string) int {
+	var acc int
 	rules, pages := parseInput(input)
 	orderingRules := map[string]bool{}
 	for _, rule := range rules {
 		orderingRules[rule] = true
 	}
-	fmt.Println(rules, pages)
-	for k, v := range orderingRules {
-		fmt.Println(k, v)
+
+	for _, line := range pages {
+		if filterPages(line, orderingRules) {
+			middlePage, _ := strconv.Atoi(line[len(line)/2])
+			acc += middlePage
+		}
 	}
-	return 0
+	return acc
 }
