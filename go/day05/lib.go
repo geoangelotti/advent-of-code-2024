@@ -5,11 +5,14 @@ import (
 	"strings"
 )
 
-func parseInput(input string) ([]string, [][]string) {
+func parseInput(input string) (map[string]bool, [][]string) {
 	part1 := strings.Split(input, "\n\n")[0]
 	part2 := strings.Split(input, "\n\n")[1]
-	rules := strings.Split(part1, "\n")
 	pages := [][]string{}
+	rules := map[string]bool{}
+	for _, rule := range strings.Split(part1, "\n") {
+		rules[rule] = true
+	}
 	for _, line := range strings.Split(part2, "\n") {
 		fragments := strings.Split(line, ",")
 		pages = append(pages, fragments)
@@ -32,12 +35,8 @@ func filterPages(pages []string, rules map[string]bool) bool {
 func ProcessPart1(input string) int {
 	var acc int
 	rules, pages := parseInput(input)
-	orderingRules := map[string]bool{}
-	for _, rule := range rules {
-		orderingRules[rule] = true
-	}
 	for _, line := range pages {
-		if filterPages(line, orderingRules) {
+		if filterPages(line, rules) {
 			middlePage, _ := strconv.Atoi(line[len(line)/2])
 			acc += middlePage
 		}
