@@ -1,7 +1,7 @@
 package day07
 
 import (
-	"fmt"
+	"math"
 	"strconv"
 	"strings"
 )
@@ -52,7 +52,8 @@ func canBeCalibrated(target int, numbers []int, allowedOperations []string) bool
 			} else if operation[i] == '*' {
 				acc *= number
 			} else {
-				concatenated, _ := strconv.Atoi(fmt.Sprintf("%d%d", acc, number))
+				digits := int(math.Log10(float64(number))) + 1
+				concatenated := acc*int(math.Pow10(digits)) + number
 				acc = concatenated
 			}
 		}
