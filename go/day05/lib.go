@@ -18,7 +18,15 @@ func parseInput(input string) ([]string, [][]string) {
 }
 
 func filterPages(pages []string, rules map[string]bool) bool {
-	return false
+	for i, page := range pages {
+		for j := 0; j < i; j++ {
+			composite := pages[j] + "|" + page
+			if !rules[composite] {
+				return false
+			}
+		}
+	}
+	return true
 }
 
 func ProcessPart1(input string) int {
@@ -28,7 +36,6 @@ func ProcessPart1(input string) int {
 	for _, rule := range rules {
 		orderingRules[rule] = true
 	}
-
 	for _, line := range pages {
 		if filterPages(line, orderingRules) {
 			middlePage, _ := strconv.Atoi(line[len(line)/2])
