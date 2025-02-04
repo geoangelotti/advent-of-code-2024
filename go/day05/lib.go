@@ -32,6 +32,17 @@ func parseInput(input string) ([][]int, [][]int) {
 
 func ProcessPart1(input string) int {
 	rules, pages := parseInput(input)
+	orderingRules := map[int][]int{}
+	for _, rule := range rules {
+		if page, ok := orderingRules[rule[0]]; ok {
+			fmt.Println(page)
+			page = append(page, rule[1])
+			orderingRules[rule[0]] = page
+		} else {
+			orderingRules[rule[0]] = []int{rule[1]}
+		}
+	}
 	fmt.Println(rules, pages)
+	fmt.Println(orderingRules)
 	return 0
 }
