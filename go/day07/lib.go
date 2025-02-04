@@ -1,6 +1,7 @@
 package day07
 
 import (
+	"math"
 	"strconv"
 	"strings"
 )
@@ -24,31 +25,36 @@ func parseInput(input string) map[int][]int {
 	return equations
 }
 
-func generateCombinations(n int, current string, result *[]string) {
+func generateCombinations(n int, current string, result *[]string, operations []string) {
 	if n == 0 {
 		*result = append(*result, current)
 		return
 	}
+	for _, operation := range operations {
+		generateCombinations(n-1, current+operation, result, operations)
+	}
 
-	generateCombinations(n-1, current+"+", result)
-	generateCombinations(n-1, current+"*", result)
 }
 
-func getCombinations(n int) []string {
+func getCombinations(n int, operations []string) []string {
 	result := []string{}
-	generateCombinations(n, "", &result)
+	generateCombinations(n, "", &result, operations)
 	return result
 }
 
-func canBeCalibrated(target int, equations []int) bool {
-	operations := getCombinations(len(equations) - 1)
+func canBeCalibrated(target int, numbers []int, allowedOperations []string) bool {
+	operations := getCombinations(len(numbers)-1, allowedOperations)
 	for _, operation := range operations {
-		acc := equations[0]
-		for i, equation := range equations[1:] {
+		acc := numbers[0]
+		for i, number := range numbers[1:] {
 			if operation[i] == '+' {
-				acc += equation
+				acc += number
+			} else if operation[i] == '*' {
+				acc *= number
 			} else {
-				acc *= equation
+				digits := int(math.Log10(float64(number))) + 1
+				concatenated := acc*int(math.Pow10(digits)) + number
+				acc = concatenated
 			}
 		}
 		if acc == target {
@@ -62,7 +68,18 @@ func ProcessPart1(input string) int {
 	var acc int
 	equations := parseInput(input)
 	for key, value := range equations {
-		if canBeCalibrated(key, value) {
+		if canBeCalibrated(key, value, []string{"+", "*"}) {
+			acc += key
+		}
+	}
+	return acc
+}
+
+func ProcessPart2(input string) int {
+	var acc int
+	equations := parseInput(input)
+	for key, value := range equations {
+		if canBeCalibrated(key, value, []string{"+", "*", " "}) {
 			acc += key
 		}
 	}
