@@ -37,6 +37,10 @@ func filterPages(pages []string, rules map[string]bool) bool {
 	return len(filterIncorrectPages(pages, rules)) <= 0
 }
 
+func rearrangePages(pages []string, indexes []int, rules map[string]bool) []string {
+	return pages
+}
+
 func ProcessPart1(input string) int {
 	var acc int
 	rules, pages := parseInput(input)
@@ -53,9 +57,9 @@ func ProcessPart2(input string) int {
 	var acc int
 	rules, pages := parseInput(input)
 	for _, line := range pages {
-		if !filterPages(line, rules) {
-
-			middlePage, _ := strconv.Atoi(line[len(line)/2])
+		if incorrectPages := filterIncorrectPages(line, rules); len(incorrectPages) > 0 {
+			rearranged := rearrangePages(line, incorrectPages, rules)
+			middlePage, _ := strconv.Atoi(rearranged[len(rearranged)/2])
 			acc += middlePage
 		}
 	}
