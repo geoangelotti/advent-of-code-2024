@@ -41,15 +41,15 @@ func getCombinations(n int, operations []string) []string {
 	return result
 }
 
-func canBeCalibrated(target int, equations []int, allowedOperations []string) bool {
-	operations := getCombinations(len(equations)-1, allowedOperations)
+func canBeCalibrated(target int, numbers []int, allowedOperations []string) bool {
+	operations := getCombinations(len(numbers)-1, allowedOperations)
 	for _, operation := range operations {
-		acc := equations[0]
-		for i, equation := range equations[1:] {
+		acc := numbers[0]
+		for i, number := range numbers[1:] {
 			if operation[i] == '+' {
-				acc += equation
+				acc += number
 			} else {
-				acc *= equation
+				acc *= number
 			}
 		}
 		if acc == target {
